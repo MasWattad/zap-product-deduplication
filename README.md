@@ -319,7 +319,7 @@ Example: `Samsung Galaxy S23 256GB Black` vs `Samsung Galaxy S23 Ultra 256GB Bla
 
 **Attribute extraction** covers six manually defined product categories. At Zap's full catalog scale, this layer would need to be replaced with an LLM-based extractor or a fine-tuned NER model.
 
-**Scoring weights** (50/35/15) were validated on this dataset. A production system would tune weights per product category using a larger labeled corpus.
+**Scoring weights** (50/35/15) were chosen based on signal reliability in this dataset and reviewed against the gold labels. A production system would tune weights per product category using a larger labeled corpus.
 
 **Blocking** uses composite string keys. At very large scale, approximate nearest neighbor search (FAISS) over embeddings would catch pairs that share no overlapping string tokens.
 
