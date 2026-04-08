@@ -233,7 +233,7 @@ Canonical title selection (`choose_canonical_title()`) scores each listing by:
 - title length
 - price
 
-Minimum price (`compute_group_min_price()`) excludes listings below 50% of the group median. If filtering leaves no listings, the full group is used as fallback.
+Minimum price is computed after excluding suspicious low-price listings flagged by the pipeline, so extreme outliers do not affect the displayed group price.
 
 ---
 
@@ -275,7 +275,7 @@ Minimum price (`compute_group_min_price()`) excludes listings below 50% of the g
 
 | Metric | Value |
 |--------|-------|
-| Input listings | 55 (54 valid for matching) |
+| Input listings | 56 |
 | Candidate pairs | 197 |
 | Merged | 53 |
 | Rejected | 144 |
