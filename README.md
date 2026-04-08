@@ -36,7 +36,7 @@ Data Quality Flagging       missing titles, invalid prices, suspicious outliers
 Attribute Extraction        structured fields from noisy multilingual titles
     │
     ▼
-Blocking                    candidate pair generation — avoids O(n²)
+Blocking                    candidate pair generation 
     │
     ▼
 Multi-Signal Scoring        fuzzy + attribute agreement + embedding similarity
