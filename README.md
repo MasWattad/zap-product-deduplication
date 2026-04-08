@@ -1,8 +1,6 @@
 # Product Deduplication Pipeline
 
-A hybrid rule + ML + LLM system for deduplicating multilingual e-commerce product listings and surfacing the lowest valid price per product group.
-
-Built as a take-home exercise for the GenAI Exploration Lead role at Zap.
+A hybrid rule-based + semantic + LLM-assisted system for deduplicating multilingual eCommerce product listings and surfacing the correct lowest price per product.
 
 ---
 
