@@ -1,8 +1,6 @@
 # Product Deduplication Pipeline
 
-A hybrid rule-based + semantic + LLM-assisted system for deduplicating multilingual eCommerce product listings and surfacing the correct lowest price per product.
-
----
+A hybrid rule-based + semantic + LLM-assisted system for deduplicating multilingual eCommerce product listings and surfacing the correct lowest valid price per product group.
 
 ## The Problem
 
@@ -159,7 +157,7 @@ Each field carries a confidence flag (`high` / `missing`) used in the scoring la
 
 ### 3. Blocking — `matching.py`
 
-Each listing is assigned composite block keys via `build_block_keys()`. Only pairs sharing at least one key are evaluated. Twelve blocking strategies combine brand, model family, model number, storage, RAM, screen size, condition, tier variant, display variant, and connectivity. A token-based fallback handles listings where attribute extraction produces no keys.
+Each listing is assigned composite block keys via `build_block_keys()`. Only pairs sharing at least one key are evaluated. Multiple blocking strategies combine brand, model family, model number, storage, RAM, screen size, condition, tier variant, display variant, and connectivity. A token-based fallback handles listings where attribute extraction produces no keys.
 
 **55 listings → 197 candidate pairs** (vs 1,485 brute-force)
 
@@ -179,7 +177,7 @@ final_score = 0.50 * fuzzy_score
 | Attribute agreement | 35% | Fraction of fields where both listings have extracted values that match exactly. High precision when coverage is good; lower weight because sparse extraction reduces coverage. |
 | Embedding similarity | 15% | Cosine similarity via `paraphrase-multilingual-MiniLM-L12-v2`. Useful for cross-language pairs; kept low because semantically similar model names (S23 vs S23 Ultra) would otherwise inflate scores. |
 
-Weights were validated against the gold label set. Production deployment would require systematic tuning on a larger labeled corpus.
+The current weights were chosen based on signal reliability in this dataset and reviewed against the gold label set. Production deployment would require systematic tuning on a larger labeled corpus.
 
 ---
 
@@ -192,7 +190,7 @@ If two listings have explicitly different values for any of: brand, model family
 If normalized titles are identical, or all core identity fields (brand, model family, model number, storage, tier variant, condition, color) match exactly — merged without LLM involvement.
 
 **Tier 3 — LLM verification**
-Pairs with `final_score` between 0.78 and 0.985, or pairs where a risk flag is detected (one side has a special tier variant and the other does not) — sent to the LLM.
+Pairs in the borderline decision zone, or pairs where a risk flag is detected (for example, one side has a special tier variant and the other does not), are routed to the LLM for verification.
 
 ---
 
@@ -221,7 +219,7 @@ After an LLM `yes` decision, `is_dangerous_variant_mismatch()` runs before any m
 - both sides have different explicit tier variants (`pro` vs `ultra`)
 - one side carries a special variant (`pro`, `ultra`, `plus`, `fe`) and the other has none
 
-Two pairs in this run hit this guardrail (`guardrail_variant_after_llm_yes`) — the LLM returned yes, the guardrail overrode it.
+Guardrail overrides are recorded as guardrail_variant_after_llm_yes when the LLM returns yes but a dangerous variant mismatch is still detected.
 
 ---
 
@@ -281,7 +279,7 @@ Minimum price (`compute_group_min_price()`) excludes listings below 50% of the g
 | Candidate pairs | 197 |
 | Merged | 53 |
 | Rejected | 144 |
-| LLM calls | 36 (18.3% of pairs) |
+| LLM calls | 36 (18.27% of pairs) |
 | Avg LLM confidence | 0.883 |
 | LLM vs rule disagreements | 13 |
 | Product groups | 21 |
@@ -304,15 +302,14 @@ Minimum price (`compute_group_min_price()`) excludes listings below 50% of the g
 
 ## LLM Error Analysis
 
-The 42 variant confusion cases in `llm_error_analysis.csv` represent correct behavior — pairs where rule-based signals correctly identified ambiguity and escalated to the LLM, which correctly rejected them.
+The 42 rows in llm_error_analysis.csv capture variant-related rejection cases, including LLM-reviewed rejections and post-LLM guardrail overrides.
 
-| Count | Rejection reason |
-|-------|-----------------|
-| 6 | `display_variant_mismatch` (Switch OLED vs Switch standard) |
-| 6 | tier variant and color do not match |
-| 3 | tier variant does not match |
-| 2 | tier variant mismatch + `llm_rule_disagreement` |
-| 2 | tier variant mismatch between listings |
+Example high-frequency rejection reasons:
+- display_variant_mismatch (e.g. Switch OLED vs standard)
+- tier variant and color do not match
+- tier variant does not match
+- tier variant mismatch with llm_rule_disagreement
+- tier variant mismatch between listings
 
 Example: `Samsung Galaxy S23 256GB Black` vs `Samsung Galaxy S23 Ultra 256GB Black` — fuzzy score 0.949, full attribute agreement on every field except the Ultra tier variant. LLM correctly rejects. Final safety: two pairs where the LLM returned `yes` were overridden by the post-LLM variant guardrail (`guardrail_variant_after_llm_yes`).
 
