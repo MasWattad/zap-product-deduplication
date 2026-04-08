@@ -242,33 +242,12 @@ Minimum price is computed after excluding suspicious low-price listings flagged 
 
 ### Terminal — pipeline run
 
-![Pipeline start and LLM decisions](screenshots/zsc3.png)
+![Pipeline start and LLM decisions](zsc3.png)
 
-![Evaluation and production notes](screenshots/zsc2.png)
+![Evaluation and production notes](zsc2.png)
 
-![LLM usage and error analysis](screenshots/zsc1.png)
+![LLM usage and error analysis](zsc1.png)
 
-### Output files — Excel view
-
-**`llm_error_analysis.csv` — variant confusion cases (page 1)**
-
-![Error analysis page 1](screenshots/excel1.png)
-
-**`llm_error_analysis.csv` — variant confusion cases (page 2)**
-
-![Error analysis page 2](screenshots/execl2.png)
-
-**`llm_error_analysis.csv` — variant confusion cases (page 3)**
-
-![Error analysis page 3](screenshots/execl3.png)
-
-**`llm_error_analysis.csv` — variant confusion cases (page 4)**
-
-![Error analysis page 4](screenshots/execl4.png)
-
-**`llm_error_analysis.csv` — variant confusion cases (page 5)**
-
-![Error analysis page 5](screenshots/execl5.png)
 
 ---
 
