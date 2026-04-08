@@ -151,7 +151,7 @@ Fields extracted:
 | `screen_size` | 15, 41mm, 45mm |
 | `color` | black, white, mint, midnight |
 
-Each field carries a confidence flag (`high` / `missing`) used in the scoring layer.
+Each extracted field contributes to the attribute agreement score only when present in both listings.
 
 ---
 
