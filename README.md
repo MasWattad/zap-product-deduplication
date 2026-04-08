@@ -312,7 +312,7 @@ Example high-frequency rejection reasons:
 - tier variant mismatch with llm_rule_disagreement
 - tier variant mismatch between listings
 
-Example: `Samsung Galaxy S23 256GB Black` vs `Samsung Galaxy S23 Ultra 256GB Black` — fuzzy score 0.949, full attribute agreement on every field except the Ultra tier variant. LLM correctly rejects. Final safety: two pairs where the LLM returned `yes` were overridden by the post-LLM variant guardrail (`guardrail_variant_after_llm_yes`).
+Example: `Samsung Galaxy S23 256GB Black` vs `Samsung Galaxy S23 Ultra 256GB Black` — fuzzy score 0.949, full attribute agreement on every field except the Ultra tier variant. LLM correctly rejects. Final safety: guardrail_variant_after_llm_yes records cases where the LLM returned yes but the post-LLM variant guardrail still blocked the merge.
 
 ---
 
