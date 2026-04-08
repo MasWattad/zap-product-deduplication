@@ -65,17 +65,20 @@ Output CSVs + Evaluation
 ## File Structure
 
 ```
-├── main.py                  entry point — orchestrates the full pipeline
-├── attribute_extraction.py  regex + alias-based field extraction from titles
-├── matching.py              blocking, scoring, and decision engine
-├── llm_layer.py             LLM prompt construction and response parsing
-├── postprocessing.py        Union-Find grouping and canonical selection
-├── evaluation.py            metrics against gold labels
-├── analysis_layer.py        LLM usage and error analysis outputs
+├── main.py                   entry point — orchestrates the full pipeline
+├── attribute_extraction.py   regex + alias-based field extraction from titles
+├── matching.py               blocking, scoring, and decision engine
+├── llm_layer.py              LLM prompt construction and response parsing
+├── postprocessing.py         Union-Find grouping and canonical selection
+├── evaluation.py             metrics against gold labels
+├── analysis_layer.py         LLM usage and error analysis outputs
+├── config.py                 thresholds and pipeline configuration
+├── .env                      API keys (gitignored)
+├── .gitignore                excludes .env and outputs/*.csv
 ├── data/
-│   ├── products.csv         input listings
-│   └── gold_labels.csv      labeled pairs for evaluation
-└── outputs/
+│   ├── products.csv          input listings
+│   └── gold_labels.csv       labeled pairs for evaluation
+└── outputs/                  gitignored — generated at runtime
     ├── products_with_attributes.csv
     ├── match_decisions.csv
     ├── grouped_products.csv
