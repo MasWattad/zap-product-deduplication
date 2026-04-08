@@ -70,7 +70,7 @@ Output CSVs + Evaluation
 ├── postprocessing.py         Union-Find grouping and canonical selection
 ├── evaluation.py             metrics against gold labels
 ├── analysis_layer.py         LLM usage and error analysis outputs
-├── config.py                 thresholds and pipeline configuration
+├── config.py                 tunable thresholds for matching behavior
 ├── .env                      API keys (gitignored)
 ├── .gitignore                excludes .env and outputs/*.csv
 ├── data/
@@ -127,7 +127,7 @@ Every row is flagged before matching:
 
 Rows with missing title or invalid price are excluded from matching entirely. They are retained in `products_with_attributes.csv` with flags for downstream review.
 
-Listing 55 (₪100 Samsung S23) is grouped correctly with its cluster, flagged as suspicious, and excluded from the displayed minimum price and canonical title selection.
+Listing 55 (₪100 Samsung S23) is grouped with the correct product cluster, flagged as suspicious, and excluded from the displayed minimum price and canonical title selection.
 
 ---
 
@@ -208,7 +208,7 @@ The LLM receives structured input rather than raw title strings — extracted at
 
 Output normalized to: `{ "match": "yes/no", "confidence": 0.9/0.6/0.3, "reason": "..." }`
 
-The system prompt instructs the model to default to `no` under uncertainty. LLM verification was applied to **36 of 197 pairs (18.3%)**.
+The system prompt instructs the model to default to no under uncertainty. LLM verification was applied to **36 of 197 pairs (18.27%)**.
 
 ---
 
