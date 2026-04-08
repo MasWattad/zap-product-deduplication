@@ -202,7 +202,8 @@ The LLM receives structured input rather than raw title strings — extracted at
 {
   "product_a": { "brand": "samsung", "model_number": "s23", "tier_variant": null, "storage": "128gb" },
   "product_b": { "brand": "samsung", "model_number": "s23", "tier_variant": "fe",  "storage": "128gb" },
-  "evidence":  { "fuzzy_score": 0.85, "attribute_score": 0.80, "final_score": 0.83, "route": "llm_verify" }
+  "evidence": {"fuzzy_score": 0.85,"attribute_score": 0.80,"embedding_score": 0.83,"final_score": 0.83,"route": "llm_verify"
+}
 }
 ```
 
@@ -275,7 +276,7 @@ Minimum price is computed after excluding suspicious low-price listings flagged 
 
 | Metric | Value |
 |--------|-------|
-| Input listings | 56 |
+| Input listings | 55 |
 | Candidate pairs | 197 |
 | Merged | 53 |
 | Rejected | 144 |
